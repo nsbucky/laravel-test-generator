@@ -154,8 +154,14 @@ class Generator
         
         $parsedAction = Str::parseCallback($action);
         
-        $reflector = (new ReflectionMethod($parsedAction[0], $parsedAction[1]));
-        $parameters = $reflector->getParameters();
+        $parameters = [];
+
+        try {
+            $reflector = (new ReflectionMethod($parsedAction[0], $parsedAction[1]));
+            $parameters = $reflector->getParameters();
+        } catch(\Exception $e) {
+        	echo $e->getMessage() . PHP_EOL;
+        };
         
         foreach ($parameters as $parameter) {
             $class = (string) $parameter->getType();
